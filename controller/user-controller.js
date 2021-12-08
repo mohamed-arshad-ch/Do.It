@@ -4,6 +4,7 @@ const bcrypt = require("bcrypt");
 
 module.exports = {
   userSignup: async (signupData, callback) => {
+    //modal/user schema extended
     var newUser = new User({
       first_name: signupData.first_name,
       last_name: signupData.last_name,
@@ -21,6 +22,7 @@ module.exports = {
     });
     let message = {};
 
+      //checking errors, if user already exists
     if (await User.findOne({ email: newUser.email })) {
       message = "Email ID Already Registered";
       callback(message);

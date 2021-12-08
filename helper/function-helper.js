@@ -1,4 +1,5 @@
 module.exports = {
+    //for current data and time format
   currentDate: () => {
     let currentDate = new Date();
     let year = currentDate.getFullYear();

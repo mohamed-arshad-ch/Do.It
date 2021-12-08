@@ -9,11 +9,13 @@ require("dotenv").config();
 let port = process.env.PORT;
 let host = process.env.HTTP_HOST;
 
-
+//for body parsing json format
 app.use(bodyParser.json());
 
+//routes defined
 var userRoute = require("./routes/user-route");
 
+//database connection stats
 mongoose
   .connect(db)
   .then(() => {
@@ -23,8 +25,10 @@ mongoose
     console.log("Error is ", err.message);
   });
 
+//route added
 app.use("/", userRoute);
 
+//server defined
 app.listen(port, () => {
   console.log(`Example app listening at http://${host}:${port}`);
 });

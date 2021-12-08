@@ -1,7 +1,7 @@
 var express = require("express");
 var router = express.Router();
-let referralCodeGenerator = require("referral-code-generator");
-var bcrypt = require("bcrypt");
+let referralCodeGenerator = require("referral-code-generator"); //for random referral code generation
+var bcrypt = require("bcrypt"); //for hashed password
 var userControl = require("../controller/user-controller");
 
 router.get("/", function (req, res) {});
