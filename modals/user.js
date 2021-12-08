@@ -3,7 +3,8 @@ var mongoose = require('mongoose'), validators = require('mongoose-validators');
 const UserSchema = mongoose.Schema({
    username:{
      type:String,
-     require:true
+     require:true,
+     validate: validators.isAlpha()
    },
    password:{
      type:String,
@@ -11,11 +12,13 @@ const UserSchema = mongoose.Schema({
    },
    first_name:{
      type:String,
-     require:true
+     require:true,
+     validate: validators.isAlpha()
    },
    last_name:{
      type:String,
-     require:true
+     require:true,
+     validate: validators.isAlpha()
    },
    email:{
      type:String,
