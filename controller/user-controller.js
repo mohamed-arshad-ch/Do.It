@@ -23,19 +23,19 @@ module.exports = {
 
     if (await User.findOne({ email: newUser.email })) {
       message = "Email ID Already Registered";
-      callback(message)
+      callback(message);
     } else if (await User.findOne({ username: newUser.username })) {
       message = "Username Already Registered";
-      callback(message)
+      callback(message);
     } else if (await User.findOne({ mobile_number: newUser.mobile_number })) {
-      message = "Mobile number Already Registered" ;
-      callback(message)
+      message = "Mobile number Already Registered";
+      callback(message);
     } else {
       // Insert the new user if they do not exist yet
       newUser.password = await bcrypt.hash(newUser.password, 10);
       await newUser.save();
       message = "New ID Created" + " " + newUser.username;
-      callback(message)
+      callback(message);
     }
 
     // var newUser = new User({
