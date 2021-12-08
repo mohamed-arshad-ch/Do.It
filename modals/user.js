@@ -1,4 +1,4 @@
-var mongoose = require('mongoose');
+var mongoose = require('mongoose'), validators = require('mongoose-validators');;
 
 const UserSchema = mongoose.Schema({
    username:{
@@ -19,15 +19,22 @@ const UserSchema = mongoose.Schema({
    },
    email:{
      type:String,
-     require:true
+     require:true,
+     validate: validators.isEmail()
    },
    mobile_number:{
      type:String,
-     require:true
+     require:true,
+     validate: validators.isNumeric()
    },
    referal_code:{
      type:String,
      require:true
+   },
+   account_created_on:{
+     type:String,
+     require:true,
+     validate: validators.isDate()
    }
    
 });
