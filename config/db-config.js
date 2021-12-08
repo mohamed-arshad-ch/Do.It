@@ -1,6 +1,11 @@
-const dbUrl = process.env.DB_URL
-const port = process.env.DB_PORT
+require("dotenv").config();
+ let dbUser = process.env.DB_USER
+ let dbPass = process.env.DB_PASS
+ let dbName = process.env.DB_NAME
+
+
+ 
 module.exports = {
-   myurl: 'mongodb+srv://moneymanager:9etP68xdYZXVp9N@moneymanagement.mox7y.mongodb.net/moneymanagement?retryWrites=true&w=majority'
+   myurl: `mongodb+srv://${dbUser}:${dbPass}@moneymanagement.mox7y.mongodb.net/${dbName}?retryWrites=true&w=majority`
    
 }

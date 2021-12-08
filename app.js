@@ -30,6 +30,7 @@ app.use("/", userRoute);
 
 //server defined
 app.listen(port, () => {
+  console.log(process.env.DB_PORT);
   console.log(`Example app listening at http://${host}:${port}`);
 });
 
