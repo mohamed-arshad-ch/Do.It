@@ -3,7 +3,7 @@ var functionHelper = require("../helper/function-helper");
 const bcrypt = require("bcrypt");
 
 module.exports = {
-  userSignup: async (signupData, callback) => {
+  userSignup: async (signupData, returndata) => {
     //modal/user schema extended
     var newUser = new User({
       first_name: signupData.first_name,
@@ -19,25 +19,45 @@ module.exports = {
         4,
         signupData.username
       ),
+      referal_points: 0,
     });
-    let message = {};
 
-      //checking errors, if user already exists
+    let callback = {
+      success: false,
+      msg: "test message",
+    };
+    let referal_code_input = signupData.referal_code_input;
+    if (referal_code_input) {
+      let referee = await User.findOne({ referal_code: referal_code_input });
+      if (referee) {
+        const newPoint = referee.referal_points + 1
+        const updatePoint = {referal_points :newPoint }
+        console.log(updatePoint);
+        await referee.updateOne(updatePoint)
+        newUser.referal_points++;
+      }
+    }
+    //checking errors, if user already exists
+
     if (await User.findOne({ email: newUser.email })) {
-      message = "Email ID Already Registered";
-      callback(message);
+      callback.msg = "Email ID Already Registered";
+      callback.success = false;
+      returndata(callback);
     } else if (await User.findOne({ username: newUser.username })) {
-      message = "Username Already Registered";
-      callback(message);
+      callback.msg = "Username Already Registered";
+      callback.success = false;
+      returndata(callback);
     } else if (await User.findOne({ mobile_number: newUser.mobile_number })) {
-      message = "Mobile number Already Registered";
-      callback(message);
+      callback.msg = "Mobile number Already Registered";
+      callback.success = false;
+      returndata(callback);
     } else {
       // Insert the new user if they do not exist yet
       newUser.password = await bcrypt.hash(newUser.password, 10);
       await newUser.save();
-      message = "New ID Created" + " " + newUser.username;
-      callback(message);
+      callback.msg = "New ID Created" + " " + newUser.referal_point;
+      callback.success = true;
+      returndata(callback);
     }
 
     // var newUser = new User({

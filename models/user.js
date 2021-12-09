@@ -38,6 +38,10 @@ const UserSchema = mongoose.Schema({
      type:String,
      require:true,
      validate: validators.isDate()
+   },
+   referal_points:{
+     type:Number,
+     require:true
    }
    
 });

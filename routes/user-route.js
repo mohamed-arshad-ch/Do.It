@@ -6,8 +6,12 @@ var userControl = require("../controller/user-controller");
 
 router.get("/", function (req, res) {});
 router.post("/signup", function (req, res) {
-  userControl.userSignup(req.body, (message) => {
-    res.send(message);
+  userControl.userSignup(req.body, (returndata) => {
+    if(returndata.success == true) {
+      res.send("new user created" + returndata.msg)
+    }else {
+      res.send(returndata.msg)
+    }
   });
 });
 

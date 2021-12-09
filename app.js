@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 var mongoose = require("mongoose");
 var bodyParser = require("body-parser");
-var User = require("./modals/user.js");
+var User = require("./models/user.js");
 var db = require("./config/db-config.js").myurl;
 var bcrypt = require("bcrypt");
 require("dotenv").config();
@@ -30,8 +30,8 @@ app.use("/", userRoute);
 
 //server defined
 app.listen(port, () => {
-  console.log(process.env.DB_PORT);
-  console.log(`Example app listening at http://${host}:${port}`);
+ 
+  console.log(`Server listening at http://${host}:${port}`);
 });
 
 module.exports = app;
