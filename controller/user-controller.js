@@ -26,19 +26,11 @@ module.exports = {
       success: false,
       msg: "test message",
     };
-    let referal_code_input = signupData.referal_code_input;
-    if (referal_code_input) {
-      let referee = await User.findOne({ referal_code: referal_code_input });
-      if (referee) {
-        const newPoint = referee.referal_points + 1
-        const updatePoint = {referal_points :newPoint }
-        console.log(updatePoint);
-        await referee.updateOne(updatePoint)
-        newUser.referal_points++;
-      }
-    }
-    //checking errors, if user already exists
 
+    if(signupData.referal_code_input){
+    functionHelper.addReferralPoint(signupData.referal_code_input,newUser)
+    }
+  
     if (await User.findOne({ email: newUser.email })) {
       callback.msg = "Email ID Already Registered";
       callback.success = false;
