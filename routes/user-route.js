@@ -15,4 +15,14 @@ router.post("/signup", function (req, res) {
   });
 });
 
+router.put("/referral", function (req, res) {
+res.send("this is refereal")
+console.log(req.body);
+
+
+
+
+});
+
+
 module.exports = router;

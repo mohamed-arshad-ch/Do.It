@@ -1,5 +1,5 @@
 module.exports = {
-    //for current data and time format
+  //for current data and time format
   currentDate: () => {
     let currentDate = new Date();
     let year = currentDate.getFullYear();
@@ -23,19 +23,36 @@ module.exports = {
     return accountCreatedDate;
   },
 
-  addReferralPoint: async (referralUser,newUser) => {
-
-       let referal_code_input = referralUser;
+  addReferralPoint: async (referralUser, newUser) => {
+    let referal_code_input = referralUser;
     if (referal_code_input) {
       let referee = await User.findOne({ referal_code: referal_code_input });
       if (referee) {
-        const newPoint = referee.referal_points + 1
-        const updatePoint = {referal_points :newPoint }
-        console.log(updatePoint);
-        await referee.updateOne(updatePoint)
+        const newPoint = referee.referal_points + 1;
+        const updatePoint = { referal_points: newPoint };
+        console.log(referee.username);
+        await referee.updateOne(updatePoint);
         newUser.referal_points++;
+        newUser.referred_by = referee.username;
       }
     }
     return newUser;
-  }
+  },
+
+  deleteReferralPoint: async (referralUser, newUser) => {
+    let referal_code_input = referralUser;
+    if (referal_code_input) {
+      let referee = await User.findOne({ referal_code: referal_code_input });
+      if (referee) {
+        newUser.referal_points++;
+        
+        newUser.referred_by = referee.username;
+        const newPoint = referee.referal_points + 1;
+        const updatePoint = { referal_points: newPoint };
+        console.log(updatePoint);
+        await referee.updateOne(updatePoint);
+      }
+    }
+    return newUser;
+  },
 };

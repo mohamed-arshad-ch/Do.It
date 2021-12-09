@@ -20,6 +20,8 @@ module.exports = {
         signupData.username
       ),
       referal_points: 0,
+      referred_by:"",
+      isDeleted:false
     });
 
     let callback = {
@@ -27,10 +29,10 @@ module.exports = {
       msg: "test message",
     };
 
-    if(signupData.referal_code_input){
-    functionHelper.addReferralPoint(signupData.referal_code_input,newUser)
+    if (signupData.referal_code_input) {
+      functionHelper.addReferralPoint(signupData.referal_code_input, newUser);
     }
-  
+
     if (await User.findOne({ email: newUser.email })) {
       callback.msg = "Email ID Already Registered";
       callback.success = false;
@@ -47,7 +49,7 @@ module.exports = {
       // Insert the new user if they do not exist yet
       newUser.password = await bcrypt.hash(newUser.password, 10);
       await newUser.save();
-      callback.msg = "New ID Created" + " " + newUser.referal_point;
+      callback.msg = "New ID Created" + " " + newUser.first_name;
       callback.success = true;
       returndata(callback);
     }
