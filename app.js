@@ -2,12 +2,14 @@ const express = require("express");
 const app = express();
 var mongoose = require("mongoose");
 var bodyParser = require("body-parser");
-var User = require("./models/user.js");
 var db = require("./config/db-config.js").myurl;
 var bcrypt = require("bcrypt");
+
+
 require("dotenv").config();
 let port = process.env.PORT;
 let host = process.env.HTTP_HOST;
+
 
 //for body parsing json format
 app.use(bodyParser.json());

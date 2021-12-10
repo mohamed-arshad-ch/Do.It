@@ -1,6 +1,9 @@
 let referralCodeGenerator = require("referral-code-generator");
 var functionHelper = require("../helper/function-helper");
 const bcrypt = require("bcrypt");
+var jwt = require("jsonwebtoken");
+var User = require("../models/user.js");
+require("dotenv").config();
 
 module.exports = {
   userSignup: async (signupData, returndata) => {
@@ -20,8 +23,8 @@ module.exports = {
         signupData.username
       ),
       referal_points: 0,
-      referred_by:"",
-      isDeleted:false
+      referred_by: "",
+      isDeleted: false,
     });
 
     let callback = {
@@ -53,54 +56,55 @@ module.exports = {
       callback.success = true;
       returndata(callback);
     }
-
-    // var newUser = new User({
-    //   first_name: signupData.first_name,
-    //   last_name: signupData.last_name,
-    //   email: signupData.email,
-    //   mobile_number: signupData.mobile_number,
-    //   username: signupData.username,
-    //   password: signupData.password,
-    //   account_created_on: functionHelper.currentDate(),
-    //   referal_code: referralCodeGenerator.custom(
-    //     "uppercase",
-    //     4,
-    //     4,
-    //     signupData.username
-    //   ),
-    // });
-    // return new Promise(async (resolve, reject) => {
-    //   await User.findOne({ username: newUser.username })
-    //     .then(async (profile) => {
-    //       if (!profile) {
-    //         bcrypt.hash(newUser.password, 10, async (err, hash) => {
-    //           if (err) {
-    //             console.log("Error is", err.message);
-    //           } else {
-    //             newUser.password = hash;
-    //             await newUser
-    //               .save()
-    //                .then(() => {
-    //                  resolve(newUser);
-    //               //   res
-    //               //     .status(200)
-    //               //     .send(
-    //               //       "New User created successfully" + " " + newUser.username
-    //               //     );
-    //                })
-    //               .catch((err) => {
-    //                 console.log("Error is ", err.message);
-    //               });
-    //           }
-    //         });
-    //       } else {
-    //         console.log("User already exists...");
-    //       }
-    //     })
-    //     .catch((err) => {
-    //       console.log("Error is", err.message);
-    //     });
-    //   resolve(newUser);
-    // });
   },
+  userLogin: async (loginData, callback) => {
+    let result = {
+      status: 200,
+      message: null,
+      accessToken: null,
+      auth: false,
+      refreshToken: null,
+    };
+    let validUser = await User.findOne({ username: loginData.username });
+    if (validUser) {
+      let isUserDeleted = await User.find(
+        { username: loginData.username },
+        { isDeleted: true }
+      );
+      if (isUserDeleted[0].isDeleted == false) {
+        let isValidPassword = await bcrypt.compare(
+          loginData.password,
+          validUser.password
+        );
+        if (isValidPassword) {
+          let data = {
+            id: validUser._id,
+            username: validUser.username,
+          };
+          result.accessToken = jwt.sign(
+            data,
+            process.env.JWT_ACCESS_TOKEN_SECRET_KEY,
+            { expiresIn: process.env.JWT_ACCESS_TOKEN_SECRET_KEY_EXPIRY }
+          );
+          result.refreshToken = jwt.sign(
+            data,
+            process.env.JWT_REFRESH_TOKEN_SECRET_KEY,
+            { expiresIn: process.env.JWT_REFRESH_TOKEN_SECRET_EXPIRY }
+          );
+          result.status = 200;
+          result.auth = true;
+          callback(result);
+        } else console.log("Incorrect Password");
+      } else {
+        result.message = "User deactivated";
+        result.auth = false;
+        callback(result);
+      }
+    } else {
+      console.log("No User Found");
+    }
+  },
+  userDelete: async (userData) => {
+    
+  }
 };

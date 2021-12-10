@@ -56,5 +56,7 @@ const UserSchema = mongoose.Schema({
  },{ versionKey: '2.0.0' 
 
 });
-module.exports = User = mongoose.model("Users", UserSchema);
 
+const User = mongoose.model("Users", UserSchema);
+
+module.exports = User;

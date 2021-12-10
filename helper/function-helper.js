@@ -1,3 +1,6 @@
+var User = require("../models/user.js");
+var jwt = require("jsonwebtoken");
+require("dotenv").config();
 module.exports = {
   //for current data and time format
   currentDate: () => {
@@ -45,7 +48,7 @@ module.exports = {
       let referee = await User.findOne({ referal_code: referal_code_input });
       if (referee) {
         newUser.referal_points++;
-        
+
         newUser.referred_by = referee.username;
         const newPoint = referee.referal_points + 1;
         const updatePoint = { referal_points: newPoint };
@@ -54,5 +57,33 @@ module.exports = {
       }
     }
     return newUser;
+  },
+
+  verifyToken: async (token,callback) => {
+    let result = {
+      status: 0,
+      message: null,
+      token: null,
+      auth: false,
+    };
+    let authHeader = token;
+    if (!authHeader) {
+      result.status = 401;
+      result.message = "unable to get token";
+      callback(result)
+    } else {
+      let token = authHeader.split(" ")[1];
+      jwt.verify(token, process.env.JWT_SECRET_KEY, function (err, decoded) {
+        if (err) {
+          result.status = 500;
+          result.message = "Unauthorized request";
+          callback(result)
+        } else {
+          result.status = 200;
+          result.message = "Token Verified";
+          callback(result)
+        }
+      });
+    }
   },
 };
