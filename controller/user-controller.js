@@ -104,7 +104,5 @@ module.exports = {
       console.log("No User Found");
     }
   },
-  userDelete: async (userData) => {
-    
-  }
+  userDelete: async (userData) => {},
 };

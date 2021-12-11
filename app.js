@@ -4,16 +4,15 @@ var mongoose = require("mongoose");
 var bodyParser = require("body-parser");
 var db = require("./config/db-config.js").myurl;
 var bcrypt = require("bcrypt");
-
-
+var cors = require("cors");
 require("dotenv").config();
 let port = process.env.PORT;
 let host = process.env.HTTP_HOST;
 
-
 //for body parsing json format
 app.use(bodyParser.json());
 
+app.use(cors());
 //routes defined
 var userRoute = require("./routes/user-route");
 

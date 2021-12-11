@@ -59,7 +59,7 @@ module.exports = {
     return newUser;
   },
 
-  verifyToken: async (token,callback) => {
+  verifyToken: async (token, callback) => {
     let result = {
       status: 0,
       message: null,
@@ -70,20 +70,47 @@ module.exports = {
     if (!authHeader) {
       result.status = 401;
       result.message = "unable to get token";
-      callback(result)
+      callback(result);
     } else {
       let token = authHeader.split(" ")[1];
-      jwt.verify(token, process.env.JWT_SECRET_KEY, function (err, decoded) {
-        if (err) {
-          result.status = 500;
-          result.message = "Unauthorized request";
-          callback(result)
-        } else {
-          result.status = 200;
-          result.message = "Token Verified";
-          callback(result)
+      jwt.verify(
+        token,
+        process.env.JWT_ACCESS_TOKEN_SECRET_KEY,
+        function (err, decoded) {
+          if (err) {
+            result.status = 500;
+            result.message = "Unauthorized request";
+            callback(result);
+          } else {
+            result.status = 200;
+            result.message = "Token Verified";
+            console.log(decoded);
+            callback(result);
+          }
         }
-      });
+      );
+    }
+  },
+  deactivateAccount: async (userId, callback) => {
+    let result = {
+      status: 0,
+      message: null,
+      token: null,
+      error: false,
+      status_code: 0,
+    };
+    let user = await User.findOne({ _id: userId } && { isDeleted: false });
+    if (user) {
+      await user.updateOne({ isDeleted: true });
+      result.status_code = 103;
+      result.error = false;
+      result.message = "User Deleted";
+      callback(result);
+    } else {
+      result.status_code = 104;
+      result.error = true;
+      result.message = "Error Deleting User";
+      callback(result);
     }
   },
 };
