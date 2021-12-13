@@ -16,7 +16,7 @@ model Users {
   active    Boolean @default(true)
 
   Ledgers      Ledgers[]
-  Ledger_Group Ledger_Group[]
+  Ledger_Group ledgergroup[]
   Transactions Transactions[]
 }
 
@@ -29,11 +29,11 @@ model Ledgers {
   description     String @db.VarChar(255)
   createdAt       String @db.VarChar(255)
 
-  Ledger_Group Ledger_Group[]
+  Ledger_Group ledgergroup[]
   Transactions Transactions[]
 }
 
-model Ledger_Group {
+model ledgergroup {
   id         Int     @id @unique @default(autoincrement())
   user       Users   @relation(fields: [uid], references: [uid])
   uid        String

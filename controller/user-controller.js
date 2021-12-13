@@ -4,7 +4,6 @@ const bcrypt = require("bcrypt");
 var jwt = require("jsonwebtoken");
 var User = require("../models/user.js");
 const { PrismaClient } = require("@prisma/client");
-
 const prisma = new PrismaClient();
 
 require("dotenv").config();

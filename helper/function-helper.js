@@ -119,7 +119,6 @@ module.exports = {
     }
   },
   createLedger: async (data) => {
-    console.log(data);
      await prisma.ledgers.create({
         data: {
           uid: data.userID,
@@ -130,14 +129,15 @@ module.exports = {
         }
       });   
   },
-  createLedgerGroup: async (data) => {
-    console.log(data);
-     await prisma.ledger_group.create({
+ createLedger: async (data) => {
+     await prisma.ledgers.create({
         data: {
           uid: data.userID,
-          group_name: data.account_group,
-          ledgers: data.account_name
+          ledger_name: data.account_name,
+          opening_balance: data.opening_balance,
+          description: data.description,
+          createdAt: Date(),
         }
       });   
-  }
+  },
 };
