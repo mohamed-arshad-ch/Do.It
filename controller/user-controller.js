@@ -3,8 +3,14 @@ var functionHelper = require("../helper/function-helper");
 const bcrypt = require("bcrypt");
 
 module.exports = {
+  
   userSignup: async (signupData, callback) => {
     //modal/user schema extended
+    try {
+      
+    } catch (error) {
+      
+    }
     var newUser = new User({
       first_name: signupData.first_name,
       last_name: signupData.last_name,
