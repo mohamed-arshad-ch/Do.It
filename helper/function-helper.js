@@ -122,11 +122,21 @@ module.exports = {
     console.log(data);
      await prisma.ledgers.create({
         data: {
-          userId: data.userID,
+          uid: data.userID,
           ledger_name: data.account_name,
           opening_balance: data.opening_balance,
           description: data.description,
-          createdAt: currentDate().toString(),
+          createdAt: Date(),
+        }
+      });   
+  },
+  createLedgerGroup: async (data) => {
+    console.log(data);
+     await prisma.ledger_group.create({
+        data: {
+          uid: data.userID,
+          group_name: data.account_group,
+          ledgers: data.account_name
         }
       });   
   }
