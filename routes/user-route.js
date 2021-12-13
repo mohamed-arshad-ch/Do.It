@@ -27,11 +27,8 @@ router.post("/api/signup", function (req, res) {
   });
 });
 
-router.get("/protect", isAuthorized, function (req, res) {
-  res.send("this is protected route");
-});
-router.put("/referral", isAuthorized, function (req, res) {
-  console.log(req.decoded.id);
+router.get("/api/users/myaccount/dashboard/create-ledger",isAuthorized, function (req, res) {
+  console.log(req.body);
 });
 
 router.put("/api/user/myaccount/delete", isAuthorized, function (req, res) {

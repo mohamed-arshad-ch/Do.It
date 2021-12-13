@@ -1,8 +1,11 @@
+
 require("dotenv").config();
-let dbUser = process.env.DB_USER;
-let dbPass = process.env.DB_PASS;
-let dbName = process.env.DB_NAME;
+let mongoUser = process.env.MONGO_DB_USER;
+let mongoPass = process.env.MONGO_DB_PASS;
+let mongoDb = process.env.MONGO_DB_NAME;
+
 
 module.exports = {
-  myurl: `mongodb+srv://${dbUser}:${dbPass}@moneymanagement.mox7y.mongodb.net/${dbName}?retryWrites=true&w=majority`,
+  mongodbUrl: `mongodb+srv://${mongoUser}:${mongoPass}@moneymanagement.mox7y.mongodb.net/${mongoDb}?retryWrites=true&w=majority`,
+  
 };

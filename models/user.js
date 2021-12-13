@@ -6,7 +6,6 @@ const UserSchema = mongoose.Schema(
     username: {
       type: String,
       require: true,
-      validate: validators.isAlpha(),
     },
     password: {
       type: String,

@@ -3,7 +3,7 @@ require("dotenv").config();
 
 module.exports = (req, res, next) => {
   var newAccessToken = {};
-  console.log(req.headers.refresh_token);
+
 
   try {
     if (!req.headers.refresh_token) {
@@ -31,7 +31,7 @@ module.exports = (req, res, next) => {
             newAccessToken.id = decoded.id;
             newAccessToken.username = decoded.username;
             req.decoded = decoded;
-            console.log(decoded);
+
 
             if (decoded.id === refreshToken.id) {
               accessToken = jwt.sign(
@@ -39,13 +39,15 @@ module.exports = (req, res, next) => {
                 process.env.JWT_ACCESS_TOKEN_SECRET_KEY,
                 { expiresIn: process.env.JWT_ACCESS_TOKEN_SECRET_KEY_EXPIRY }
               );
+              next();
               return res.status(200).json({
                 auth: true,
                 error_code: 000,
                 message: "Authentication successfull",
                 access_token: accessToken,
-              });
-              next();
+              })
+              
+              
             } else {
               return res.status(401).json({
                 auth: false,

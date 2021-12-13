@@ -3,6 +3,10 @@ var functionHelper = require("../helper/function-helper");
 const bcrypt = require("bcrypt");
 var jwt = require("jsonwebtoken");
 var User = require("../models/user.js");
+const { PrismaClient } = require("@prisma/client");
+
+const prisma = new PrismaClient();
+
 require("dotenv").config();
 
 module.exports = {
@@ -51,9 +55,17 @@ module.exports = {
     } else {
       // Insert the new user if they do not exist yet
       newUser.password = await bcrypt.hash(newUser.password, 10);
-      await newUser.save();
+      let newId = await newUser.save();
       callback.msg = "New ID Created" + " " + newUser.first_name;
       callback.success = true;
+      await prisma.users.create({
+        data: {
+          mongo_id: newId._id.toString(),
+          username: newId.username.toString(),
+          createdAt: newId.account_created_on.toString(),
+          active: true,
+        },
+      });
       returndata(callback);
     }
   },

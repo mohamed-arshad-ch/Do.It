@@ -1,5 +1,7 @@
 var User = require("../models/user.js");
 var jwt = require("jsonwebtoken");
+const { PrismaClient } = require("@prisma/client");
+const prisma = new PrismaClient();
 require("dotenv").config();
 module.exports = {
   //for current data and time format

@@ -1,0 +1,51 @@
+// This is your Prisma schema file,
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("MYSQL_DATABASE_URI")
+}
+
+model Users {
+
+  mongo_id  String    @db.VarChar(255)
+  uid       Int       @id @unique @default(autoincrement())
+  username  String    @unique
+  createdAt String    @db.VarChar(255)
+  active    Boolean   @default(true)
+  Ledgers   Ledgers[]
+
+}
+
+model Ledgers {
+  id              Int            @id @unique @default(autoincrement())
+  user            Users          @relation(fields: [userId], references: [uid])
+  userId          Int
+  ledger_name     String         @unique
+  opening_balance Int
+  description     String         @db.VarChar(255)
+  createdAt       String         @db.VarChar(255)
+  Ledger_Group    Ledger_Group[]
+  Transactions    Transactions[]
+}
+
+model Ledger_Group {
+  id         Int     @id @unique @default(autoincrement())
+  user       Ledgers @relation(fields: [userId], references: [userId])
+  userId     Int
+  group_name String  @db.VarChar(20)
+}
+
+model Transactions {
+  t_id           Int      @id @unique @default(autoincrement())
+  user           Ledgers  @relation(fields: [userId], references: [userId])
+  userId         Int
+  t_type         String   @db.VarChar(20)
+  t_catagory     String   @db.VarChar(20)
+  t_note         String   @db.VarChar(20)
+  t_date         DateTime
+  t_created_date DateTime @default(now())
+}
