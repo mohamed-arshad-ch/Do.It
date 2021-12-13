@@ -1,25 +1,31 @@
 const express = require("express");
 const app = express();
 var mongoose = require("mongoose");
+
 var bodyParser = require("body-parser");
-var User = require("./modals/user.js");
-var db = require("./config/db-config.js").myurl;
+var mongoDb = require("./config/db-config.js").mongodbUrl;
+
 var bcrypt = require("bcrypt");
+var cors = require("cors");
 require("dotenv").config();
 let port = process.env.PORT;
 let host = process.env.HTTP_HOST;
 
+
 //for body parsing json format
 app.use(bodyParser.json());
 
+app.use(cors());
 //routes defined
 var userRoute = require("./routes/user-route");
 
+
+
 //database connection stats
 mongoose
-  .connect(db)
+  .connect(mongoDb)
   .then(() => {
-    console.log("Database is connected");
+    console.log("MongoDB Conenction established");
   })
   .catch((err) => {
     console.log("Error is ", err.message);
@@ -30,7 +36,7 @@ app.use("/", userRoute);
 
 //server defined
 app.listen(port, () => {
-  console.log(`Example app listening at http://${host}:${port}`);
+  console.log(`Server listening at http://${host}:${port}`);
 });
 
 module.exports = app;
