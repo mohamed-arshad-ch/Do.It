@@ -27,8 +27,12 @@ router.post("/api/signup", function (req, res) {
   });
 });
 
-router.get("/api/users/myaccount/dashboard/create-ledger",isAuthorized, function (req, res) {
+router.post("/api/users/myaccount/dashboard/create-ledger",isAuthorized, function (req, res) {
  functionHelper.createLedger(req.body)
+});
+
+router.post("/api/users/myaccount/dashboard/create-ledger-group",isAuthorized, function (req, res) {
+ functionHelper.createLedgerGroup(req.body)
 });
 
 router.put("/api/user/myaccount/delete", isAuthorized, function (req, res) {
