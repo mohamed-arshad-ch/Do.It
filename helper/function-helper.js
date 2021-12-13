@@ -3,7 +3,9 @@ var jwt = require("jsonwebtoken");
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 require("dotenv").config();
+var createdAt = null;
 module.exports = {
+ 
   //for current data and time format
   currentDate: () => {
     let currentDate = new Date();
@@ -25,6 +27,7 @@ module.exports = {
       minutes +
       ":" +
       seconds;
+
     return accountCreatedDate;
   },
 
@@ -115,4 +118,16 @@ module.exports = {
       callback(result);
     }
   },
+  createLedger: async (data) => {
+    console.log(data);
+     await prisma.ledgers.create({
+        data: {
+          userId: data.userID,
+          ledger_name: data.account_name,
+          opening_balance: data.opening_balance,
+          description: data.description,
+          createdAt: currentDate().toString(),
+        }
+      });   
+  }
 };

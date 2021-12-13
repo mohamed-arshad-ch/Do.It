@@ -31,7 +31,7 @@ module.exports = (req, res, next) => {
             newAccessToken.id = decoded.id;
             newAccessToken.username = decoded.username;
             req.decoded = decoded;
-
+            req.body.userID = decoded.id;
 
             if (decoded.id === refreshToken.id) {
               accessToken = jwt.sign(

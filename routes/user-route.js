@@ -16,7 +16,7 @@ router.post("/api/auth/login", function (req, res) {
   });
 });
 
-router.get("/", function (req, res) {});
+router.get("/",isAuthorized, function (req, res) {});
 router.post("/api/signup", function (req, res) {
   userControl.userSignup(req.body, (returndata) => {
     if (returndata.success == true) {
@@ -28,7 +28,7 @@ router.post("/api/signup", function (req, res) {
 });
 
 router.get("/api/users/myaccount/dashboard/create-ledger",isAuthorized, function (req, res) {
-  console.log(req.body);
+ functionHelper.createLedger(req.body)
 });
 
 router.put("/api/user/myaccount/delete", isAuthorized, function (req, res) {

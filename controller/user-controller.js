@@ -60,7 +60,7 @@ module.exports = {
       callback.success = true;
       await prisma.users.create({
         data: {
-          mongo_id: newId._id.toString(),
+          uid: newId._id.toString(),
           username: newId.username.toString(),
           createdAt: newId.account_created_on.toString(),
           active: true,
