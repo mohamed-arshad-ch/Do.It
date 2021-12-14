@@ -9,8 +9,17 @@ const prisma = new PrismaClient();
 require("dotenv").config();
 
 module.exports = {
-  userSignup: async (signupData, returndata) => {
+
+  
+  userSignup: async (signupData, callback) => {
+
+ 
     //modal/user schema extended
+    try {
+      
+    } catch (error) {
+      
+    }
     var newUser = new User({
       first_name: signupData.first_name,
       last_name: signupData.last_name,
@@ -30,10 +39,10 @@ module.exports = {
       isDeleted: false,
     });
 
-    let callback = {
-      success: false,
-      msg: "test message",
-    };
+    // let callback = {
+    //   success: false,
+    //   msg: "test message",
+    // };
 
     if (signupData.referal_code_input) {
       functionHelper.addReferralPoint(signupData.referal_code_input, newUser);
