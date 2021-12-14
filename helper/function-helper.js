@@ -3,9 +3,8 @@ var jwt = require("jsonwebtoken");
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 require("dotenv").config();
-var createdAt = null;
+
 module.exports = {
- 
   //for current data and time format
   currentDate: () => {
     let currentDate = new Date();
@@ -119,25 +118,54 @@ module.exports = {
     }
   },
   createLedger: async (data) => {
-     await prisma.ledgers.create({
-        data: {
-          uid: data.userID,
-          ledger_name: data.account_name,
-          opening_balance: data.opening_balance,
-          description: data.description,
-          createdAt: Date(),
-        }
-      });   
+    await prisma.ledgers.create({
+      data: {
+        uid: data.userID,
+        ledger_name: data.account_name,
+        description: data.description,
+        createdAt: Date(),
+        group_name: data.group_name,
+      },
+    });
   },
- createLedger: async (data) => {
-     await prisma.ledgers.create({
-        data: {
+  createTransactions: async (data) => {
+    await prisma.transactions.create({
+      data: {
+        uid: data.userID,
+        t_type: data.transaction_type,
+        t_catagory: data.transaction_catagory,
+        t_note: data.transaction_note,
+        t_date: data.transaction_date,
+        t_created_date: Date(),
+        t_amount: data.transaction_amount,
+        group_name: data.account_name,
+      },
+    });
+  },
+  viewAccounts: (data) => {
+    return new Promise(async (resolve, reject) => {
+      const getAccounts = await prisma.ledgers.findMany({
+        where: {
           uid: data.userID,
-          ledger_name: data.account_name,
-          opening_balance: data.opening_balance,
-          description: data.description,
-          createdAt: Date(),
-        }
-      });   
+        },
+      });
+      let accounts = [];
+      for (let index = 0; index < getAccounts.length; index++) {
+        accounts.push(getAccounts[index].ledger_name);
+      }
+      resolve(accounts);
+    });
+  },
+  viewDailyTransactions: (data) => {
+    return new Promise(async (resolve, reject) => {
+      const getAccounts = await prisma.transactions.findMany({
+        where: {
+          uid: data.userID,
+          t_date: data.dateSelected,
+          t_type: data.typeSelected,
+        },
+      });
+      console.log(getAccounts);
+    });
   },
 };

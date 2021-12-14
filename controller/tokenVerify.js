@@ -4,7 +4,6 @@ require("dotenv").config();
 module.exports = (req, res, next) => {
   var newAccessToken = {};
 
-
   try {
     if (!req.headers.refresh_token) {
       res.send("Refresh token not found").status(403).end();
@@ -45,9 +44,7 @@ module.exports = (req, res, next) => {
                 error_code: 000,
                 message: "Authentication successfull",
                 access_token: accessToken,
-              })
-              
-              
+              });
             } else {
               return res.status(401).json({
                 auth: false,

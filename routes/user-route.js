@@ -16,7 +16,7 @@ router.post("/api/auth/login", function (req, res) {
   });
 });
 
-router.get("/",isAuthorized, function (req, res) {});
+router.get("/", isAuthorized, function (req, res) {});
 router.post("/api/signup", function (req, res) {
   userControl.userSignup(req.body, (returndata) => {
     if (returndata.success == true) {
@@ -27,13 +27,41 @@ router.post("/api/signup", function (req, res) {
   });
 });
 
-router.post("/api/users/myaccount/dashboard/create-ledger",isAuthorized, function (req, res) {
- functionHelper.createLedger(req.body)
-});
+router.post(
+  "/api/users/myaccount/dashboard/create-ledger",
+  isAuthorized,
+  function (req, res) {
+    functionHelper.createLedger(req.body);
+  }
+);
 
-router.post("/api/users/myaccount/dashboard/create-ledger-group",isAuthorized, function (req, res) {
- functionHelper.createLedgerGroup(req.body)
-});
+router.post(
+  "/api/users/myaccount/dashboard/create-transactions",
+  isAuthorized,
+  function (req, res) {
+    functionHelper.createTransactions(req.body);
+  }
+);
+
+router.get(
+  "/api/users/myaccount/dashboard/view-ledger",
+  isAuthorized,
+  function (req, res) {
+    functionHelper.viewAccounts(req.body).then((data) => {
+      let accountsArray = JSON.stringify(data);
+      console.log(data);
+      console.log(accountsArray);
+    });
+  }
+);
+
+router.get(
+  "/api/users/myaccount/dashboard/view-daily-transactions",
+  isAuthorized,
+  function (req, res) {
+    functionHelper.viewDailyTransactions(req.body);
+  }
+);
 
 router.put("/api/user/myaccount/delete", isAuthorized, function (req, res) {
   functionHelper.deactivateAccount(req.decoded.id, (callback) => {
